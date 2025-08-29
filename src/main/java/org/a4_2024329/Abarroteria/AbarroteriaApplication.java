@@ -33,7 +33,7 @@ public class AbarroteriaApplication implements CommandLineRunner {
     }
 
     private void registroProductoApp(){
-        logger.info("+++++ Bienvenido a la aplicacion de Registro Productos +++++");
+        logger.info("+++++ Bienvenido a la Aplicacion de Registro Producto +++++");
         var salir = false;
         var consola = new Scanner(System.in);
         while (!salir){

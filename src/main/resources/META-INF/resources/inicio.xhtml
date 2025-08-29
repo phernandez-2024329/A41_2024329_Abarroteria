@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<h:html xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Inicio</title>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css" />
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <div class="flex justify-content-center flex-wrap card-container yellow-container width-500">
+                <div class="flex align-items-center justify-content-center
+                            w-20rem h4rem bg-yellow-500 font-bold m-2
+                            text-gray-900 border-round">
+                    <h3> Registro Inventario de Productos </h3>
+                </div>
+            </div>
+
+            <div style="text-align: center; padding: 50px; margin: 25px;">
+                <div class="flex justify-content-center">
+
+                    <!-- Botón Login -->
+                    <p:commandButton value="Iniciar Sesión" icon="pi pi-sign-in" style="margin-right: 25px;"
+                                     oncomplete="PF('ventanaModalSesion').show()" update=":form-login" />
+
+                    <!-- Botón Prueba (directo) -->
+                    <p:commandButton value="Iniciar Prueba" icon="pi pi-sign-in"
+                                     action="index.xhtml?faces-redirect=true"
+                                     style="margin-right: 25px;" />
+
+                    <!-- Botón Registro -->
+                    <p:commandButton value="Registrarse" icon="pi pi-user-plus"
+                                     oncomplete="PF('ventanaModalRegistro').show()" update=":form-registro"/>
+                </div>
+            </div>
+        </h:form>
+
+        <!-- Modal de Login -->
+        <h:form id="form-login">
+            <p:dialog header="Iniciar Sesión" showEffect="fade" modal="true"
+                      widgetVar="ventanaModalSesion" responsive="true">
+
+                <p:outputPanel id="ventana-inicio-sesion" class="ui-fluid">
+                    <div class="field">
+                        <p:outputLabel for="correo">Correo Electrónico</p:outputLabel>
+                        <p:inputText id="correo" required="true"
+                                     value="#{clienteController.clienteLogin.correo}" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="password">Contraseña</p:outputLabel>
+                        <p:password id="password" required="true"
+                                    feedback="true"
+                                    value="#{clienteController.clienteLogin.contrasena}" />
+                    </div>
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Iniciar Sesión" icon="pi pi-check"
+                                     process="ventana-inicio-sesion @this"
+                                     actionListener="#{clienteController.login}"
+                                     update="@form"
+                                     oncomplete="if (!args.validationFailed) PF('ventanaModalSesion').hide()" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times"
+                                     onclick="PF('ventanaModalSesion').hide()" class="ui-button-secondary" type="button"/>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+
+        <!-- Modal de Registro -->
+        <h:form id="form-registro">
+            <p:dialog header="Registrarse" showEffect="fade" modal="true"
+                      widgetVar="ventanaModalRegistro" responsive="true">
+
+                <p:outputPanel id="ventana-registro" class="ui-fluid">
+                    <div class="field">
+                        <p:outputLabel for="nombre">Nombre</p:outputLabel>
+                        <p:inputText id="nombre" required="true"
+                                     value="#{clienteController.clienteSeleccionado.nombre}" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="apellido">Apellido</p:outputLabel>
+                        <p:inputText id="apellido" required="true"
+                                     value="#{clienteController.clienteSeleccionado.apellido}" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="genero">Género</p:outputLabel>
+                        <p:selectOneMenu id="genero" value="#{clienteController.clienteSeleccionado.genero}" required="true">
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />
+                            <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+                            <f:selectItem itemLabel="Femenino" itemValue="Femenino" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="telefono">Teléfono</p:outputLabel>
+                        <p:inputText id="telefono" required="true"
+                                     value="#{clienteController.clienteSeleccionado.telefono}" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="direccion">Dirección</p:outputLabel>
+                        <p:inputText id="direccion" required="true"
+                                     value="#{clienteController.clienteSeleccionado.direccion}" />
+                    </div>
+
+
+                    <div class="field">
+                        <p:outputLabel for="emailRegistro">Correo Electrónico</p:outputLabel>
+                        <p:inputText id="emailRegistro" required="true"
+                                     value="#{clienteController.clienteSeleccionado.correo}" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="passwordRegistro">Contraseña</p:outputLabel>
+                        <p:password id="passwordRegistro" required="true"
+                                    feedback="true"
+                                    value="#{clienteController.clienteSeleccionado.contrasena}" />
+                    </div>
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Registrar" icon="pi pi-check"
+                                     process="ventana-registro @this"
+                                     actionListener="#{clienteController.guardarCliente}"
+                                     update="@form"
+                                     oncomplete="if (!args.validationFailed) PF('ventanaModalRegistro').hide()" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times"
+                                     onclick="PF('ventanaModalRegistro').hide()" class="ui-button-secondary" type="button"/>
+                </f:facet>
+            </p:dialog>
+        </h:form>
+    </h:body>
+</h:html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<h:html xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>
+            Registro Productos
+        </title>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex/themes/primeone-dark.css"/>
+    </h:head>
+    <h:body>
+        <div class="card">
+            <h:form id="formulario-productos">
+                <div class="card">
+                    <p:menubar>
+                        <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                                    update=":formulario-productos:tabla-productos"
+                                    actionListener="#{indexController.cargarDatos()}"/>
+                        <p:menuitem value="Nuevo Producto" icon="pi pi-fw pi-plus"
+                                    actionListener="#{indexController.agregarProducto()}"
+                                    update=":formulario-modal:ventana-producto"
+                                    oncomplete="PF('ventanaModalProducto').show()"/>
+                    </p:menubar>
+                </div>
+                <div class="card">
+                    <p:dataTable value="#{indexController.productos}" var="producto"
+                                 id="tabla-productos" widgetVar="productoTabla">
+                        <f:facet name="header">
+                            <div class="flex justify-content-center flex-wrap
+                                        card-container yellow-container">
+                                <div class="flex align-items-center justify-content-center
+                                            w-20rem h4rem bg-yellow-500 font-bold m-2
+                                            text-gray-900 border-round">
+                                    <h3> Registro Inventario de Productos </h3>
+                                </div>
+                            </div>
+                        </f:facet>
+                        <p:column headerText="ID_CATEGORIA">
+                            <h:outputText value="#{producto.idCategoria}"/>
+                        </p:column>
+                        <p:column headerText="NOMBRE_PRODUCTO">
+                            <h:outputText value="#{producto.nombreProducto}"/>
+                        </p:column>
+                        <p:column headerText="MARCA">
+                            <h:outputText value="#{producto.marca}"/>
+                        </p:column>
+                        <p:column headerText="DESCRIPCION">
+                            <h:outputText value="#{producto.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="PRECIO">
+                            <h:outputText value="#{producto.precio}"/>
+                        </p:column>
+                        <!-- Botones de acción -->
+                        <p:column headerText="ACCIONES">
+                            <p:commandButton value="Editar" icon="pi pi-pencil"
+                                             update=":formulario-modal:ventana-producto"
+                                             process="@this"
+                                             oncomplete="PF('ventanaModalProducto').show()"
+                                             styleClass="ui-button-primary">
+                                <f:setPropertyActionListener value="#{producto}"
+                                                             target="#{indexController.productoSelecionado}"/>
+
+                            </p:commandButton>
+                            <p:commandButton value="Eliminar" icon="pi pi-trash" class="ui-button-danger" process="@this"
+                                             oncomplete="PF('ventanaEliminarProducto').show()">
+                                <f:setPropertyActionListener value="#{producto}" target="#{indexController.productoSelecionado}"/>
+                            </p:commandButton>
+
+                        </p:column>
+                    </p:dataTable>
+                </div>
+                <p:growl id="mensaje-emergente" showDetails="true" />
+            </h:form>
+            <h:form id="formulario-modal">
+                <p:dialog header="Detalle Productos" showEffect="fade" modal="true" widgetVar="ventanaModalProducto" responsive="true">
+                    <p:outputPanel id="ventana-producto" class="ui-fluid">
+                        <div class="field">
+                            <p:outputLabel for="idCategoria">ID Categoria</p:outputLabel>
+                            <p:inputText id="idCategoria" required="true"
+                                         value="#{indexController.productoSelecionado.idCategoria}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="nombreProducto">Nombre del Producto</p:outputLabel>
+                            <p:inputText id="nombreProducto" required="true"
+                                         value="#{indexController.productoSelecionado.nombreProducto}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="marca">Marca del Producto</p:outputLabel>
+                            <p:inputText id="marca" required="true"
+                                         value="#{indexController.productoSelecionado.marca}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="descripcion">Descripcion del Producto</p:outputLabel>
+                            <p:inputText id="descripcion" required="true"
+                                         value="#{indexController.productoSelecionado.descripcion}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="precio">Precio del Producto</p:outputLabel>
+                            <p:inputText id="precio" required="true"
+                                         value="#{indexController.productoSelecionado.precio}"/>
+                        </div>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+                        <p:commandButton value="Guardar" icon="pi pi-check"  process="ventana-producto @this" actionListener="#{indexController.guardarProducto}"
+                                         oncomplete="PF('ventanaModalProducto').hide()"/>
+                        <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('ventanaModalProducto').hide()" class="ui-button-secondary" type="button"/>
+                    </f:facet>
+                </p:dialog>
+                <p:confirmDialog widgetVar="ventanaEliminarProducto" showEffect="fade" width="300" message="Desea eliminar el Producto?" header="Confirmar" severity="warn">
+                    <p:commandButton value="Si" icon="pi pi-check" process="@this" actionListener="#{indexController.eliminarProducto}" oncomplete="PF('ventanaEliminarProducto').hide()"/>
+                    <p:commandButton value="No" icon="pi pi-times" onclick="PF('ventanaEliminarProducto').hide()" styleClass="ui-button-secondary" type="button"/>
+                </p:confirmDialog>
+            </h:form>
+        </div>
+    </h:body>
+</h:html>
